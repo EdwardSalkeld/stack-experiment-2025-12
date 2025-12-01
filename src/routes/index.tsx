@@ -24,6 +24,12 @@ const updateCount = createServerFn({ method: "POST" })
     await fs.promises.writeFile(filePath, `${count + data}`);
   });
 
+const myFunction = createServerFn({ method: "POST" })
+  .inputValidator((data: { message: string }) => data)
+  .handler(async ({ data }) => {
+    console.log(`Worker received message: ${data.message}`);
+    return "Hello from the worker!";
+  });
 export const Route = createFileRoute("/")({
   component: Home,
   loader: async () => await getCount(),
@@ -34,15 +40,30 @@ function Home() {
   const state = Route.useLoaderData();
 
   return (
-    <button
-      type="button"
-      onClick={() => {
-        updateCount({ data: 1 }).then(() => {
-          router.invalidate();
-        });
-      }}
-    >
-      Add 1 to {state}?
-    </button>
+    <div>
+      <button
+        type="button"
+        onClick={() => {
+          updateCount({ data: 1 }).then(() => {
+            router.invalidate();
+          });
+        }}
+      >
+        Add 1 to {state}?
+      </button>
+      <p>Hello</p>
+      <button
+        type="button"
+        onClick={() => {
+          myFunction({ data: { message: "Hello from the client!" } }).then(
+            (response) => {
+              console.log(response);
+            },
+          );
+        }}
+      >
+        "Send Message to Worker"
+      </button>
+    </div>
   );
 }
