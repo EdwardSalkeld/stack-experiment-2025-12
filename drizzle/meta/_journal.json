@@ -8,6 +8,13 @@
       "when": 1764586159578,
       "tag": "0000_long_norrin_radd",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1764587213576,
+      "tag": "0001_deep_absorbing_man",
+      "breakpoints": true
     }
   ]
 }

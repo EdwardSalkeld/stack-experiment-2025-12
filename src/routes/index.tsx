@@ -2,6 +2,8 @@
 import * as fs from "node:fs";
 import { createFileRoute, useRouter } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
+import { db } from "../index";
+import { messagesTable } from "../db/schema";
 
 const filePath = "count.txt";
 
@@ -28,6 +30,12 @@ const myFunction = createServerFn({ method: "POST" })
   .inputValidator((data: { message: string }) => data)
   .handler(async ({ data }) => {
     console.log(`Worker received message: ${data.message}`);
+
+    await db.insert(messagesTable).values({
+      message: data.message,
+      timestamp: new Date(),
+    });
+
     return "Hello from the worker!";
   });
 export const Route = createFileRoute("/")({

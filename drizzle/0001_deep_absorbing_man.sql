@@ -1,0 +1,1 @@
+ALTER TABLE `messages_table` ADD `timestamp` integer NOT NULL;
