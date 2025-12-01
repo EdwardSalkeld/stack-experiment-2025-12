@@ -2,15 +2,16 @@
 import * as fs from "node:fs";
 import { createFileRoute, useRouter } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
-import { db } from "../index";
-import { messagesTable } from "../db/schema";
-import { useState } from "react";
 import { desc } from "drizzle-orm";
+import { useState } from "react";
+
+import { messagesTable } from "../db/schema";
+import { db } from "../index";
 
 const filePath = "count.txt";
 
 async function readCount() {
-  return parseInt(
+  return Number.parseInt(
     await fs.promises.readFile(filePath, "utf-8").catch(() => "0"),
   );
 }
