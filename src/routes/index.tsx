@@ -5,6 +5,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { db } from "../index";
 import { messagesTable } from "../db/schema";
 import { useState } from "react";
+import { desc } from "drizzle-orm";
 
 const filePath = "count.txt";
 
@@ -39,14 +40,31 @@ const myFunction = createServerFn({ method: "POST" })
 
     return "Hello from the worker!";
   });
+
+const getMessages = createServerFn({
+  method: "GET",
+}).handler(async () => {
+  const messages = await db
+    .select()
+    .from(messagesTable)
+    .orderBy(desc(messagesTable.timestamp))
+    .limit(10)
+    .all();
+  return messages.reverse();
+});
+
 export const Route = createFileRoute("/")({
   component: Home,
-  loader: async () => await getCount(),
+  loader: async () => {
+    const count = await getCount();
+    const messages = await getMessages();
+    return { count, messages };
+  },
 });
 
 function Home() {
   const router = useRouter();
-  const state = Route.useLoaderData();
+  const { count, messages } = Route.useLoaderData();
   const [message, setMessage] = useState("");
 
   return (
@@ -69,12 +87,37 @@ function Home() {
             cursor: "pointer",
           }}
         >
-          Add 1 to {state}?
+          Add 1 to {count}?
         </button>
       </div>
 
       <div style={{ backgroundColor: "#f8f9fa", padding: "30px", borderRadius: "8px" }}>
-        <h2 style={{ marginTop: 0, marginBottom: "20px", color: "#333" }}>Send a Message</h2>
+        <h2 style={{ marginTop: 0, marginBottom: "20px", color: "#333" }}>Messages</h2>
+
+        {messages.length > 0 && (
+          <div style={{ marginBottom: "30px" }}>
+            {messages.map((msg) => (
+              <div
+                key={msg.id}
+                style={{
+                  backgroundColor: "white",
+                  padding: "15px",
+                  marginBottom: "10px",
+                  borderRadius: "6px",
+                  border: "1px solid #e0e0e0",
+                }}
+              >
+                <div style={{ fontSize: "12px", color: "#888", marginBottom: "8px" }}>
+                  {new Date(msg.timestamp).toLocaleString()}
+                </div>
+                <div style={{ fontSize: "16px", color: "#333", whiteSpace: "pre-wrap" }}>
+                  {msg.message}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+
         <textarea
           value={message}
           onChange={(e) => setMessage(e.target.value)}
@@ -98,6 +141,7 @@ function Home() {
               (response) => {
                 console.log(response);
                 setMessage("");
+                router.invalidate();
               },
             );
           }}
