@@ -1,0 +1,29 @@
+{
+  "name": "stack-experiment-2025-12",
+  "module": "index.ts",
+  "type": "module",
+  "scripts": {
+    "dev": "vite dev",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "private": true,
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@vitejs/plugin-react": "^5.1.1",
+    "vite": "^7.2.6"
+  },
+  "peerDependencies": {
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "@tanstack/react-router": "^1.139.12",
+    "@tanstack/react-start": "^1.139.12",
+    "@types/node": "^24.10.1",
+    "@types/react": "^19.2.7",
+    "@types/react-dom": "^19.2.3",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "vite-tsconfig-paths": "^5.1.4"
+  }
+}
