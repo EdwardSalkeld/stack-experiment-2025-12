@@ -13,6 +13,7 @@ const filePath = "count.txt";
 async function readCount() {
   return Number.parseInt(
     await fs.promises.readFile(filePath, "utf-8").catch(() => "0"),
+    10,
   );
 }
 
@@ -45,7 +46,7 @@ const myFunction = createServerFn({ method: "POST" })
 const getMessages = createServerFn({
   method: "GET",
 }).handler(async () => {
-  const messages = await db
+  const messages = db
     .select()
     .from(messagesTable)
     .orderBy(desc(messagesTable.timestamp))
