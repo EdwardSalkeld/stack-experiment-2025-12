@@ -4,6 +4,7 @@ import { createFileRoute, useRouter } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
 import { db } from "../index";
 import { messagesTable } from "../db/schema";
+import { useState } from "react";
 
 const filePath = "count.txt";
 
@@ -46,6 +47,7 @@ export const Route = createFileRoute("/")({
 function Home() {
   const router = useRouter();
   const state = Route.useLoaderData();
+  const [message, setMessage] = useState("");
 
   return (
     <div>
@@ -60,17 +62,23 @@ function Home() {
         Add 1 to {state}?
       </button>
       <p>Hello</p>
+      <input
+        type="text"
+        value={message}
+        onChange={(e) => setMessage(e.target.value)}
+        placeholder="Enter a message"
+      />
       <button
         type="button"
         onClick={() => {
-          myFunction({ data: { message: "Hello from the client!" } }).then(
+          myFunction({ data: { message } }).then(
             (response) => {
               console.log(response);
             },
           );
         }}
       >
-        "Send Message to Worker"
+        Send Message to Worker
       </button>
     </div>
   );
