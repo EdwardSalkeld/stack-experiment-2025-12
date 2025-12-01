@@ -50,36 +50,72 @@ function Home() {
   const [message, setMessage] = useState("");
 
   return (
-    <div>
-      <button
-        type="button"
-        onClick={() => {
-          updateCount({ data: 1 }).then(() => {
-            router.invalidate();
-          });
-        }}
-      >
-        Add 1 to {state}?
-      </button>
-      <p>Hello</p>
-      <input
-        type="text"
-        value={message}
-        onChange={(e) => setMessage(e.target.value)}
-        placeholder="Enter a message"
-      />
-      <button
-        type="button"
-        onClick={() => {
-          myFunction({ data: { message } }).then(
-            (response) => {
-              console.log(response);
-            },
-          );
-        }}
-      >
-        Send Message to Worker
-      </button>
+    <div style={{ maxWidth: "600px", margin: "40px auto", padding: "20px", fontFamily: "system-ui, sans-serif" }}>
+      <div style={{ marginBottom: "40px" }}>
+        <button
+          type="button"
+          onClick={() => {
+            updateCount({ data: 1 }).then(() => {
+              router.invalidate();
+            });
+          }}
+          style={{
+            padding: "10px 20px",
+            fontSize: "16px",
+            backgroundColor: "#007bff",
+            color: "white",
+            border: "none",
+            borderRadius: "6px",
+            cursor: "pointer",
+          }}
+        >
+          Add 1 to {state}?
+        </button>
+      </div>
+
+      <div style={{ backgroundColor: "#f8f9fa", padding: "30px", borderRadius: "8px" }}>
+        <h2 style={{ marginTop: 0, marginBottom: "20px", color: "#333" }}>Send a Message</h2>
+        <textarea
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+          placeholder="Enter your message here..."
+          style={{
+            width: "100%",
+            minHeight: "120px",
+            padding: "12px",
+            fontSize: "16px",
+            border: "2px solid #ddd",
+            borderRadius: "6px",
+            resize: "vertical",
+            boxSizing: "border-box",
+            fontFamily: "inherit",
+          }}
+        />
+        <button
+          type="button"
+          onClick={() => {
+            myFunction({ data: { message } }).then(
+              (response) => {
+                console.log(response);
+                setMessage("");
+              },
+            );
+          }}
+          style={{
+            marginTop: "12px",
+            padding: "12px 24px",
+            fontSize: "16px",
+            backgroundColor: "#28a745",
+            color: "white",
+            border: "none",
+            borderRadius: "6px",
+            cursor: "pointer",
+            fontWeight: "500",
+          }}
+        >
+          Send Message
+        </button>
+      </div>
     </div>
   );
 }
